@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 from django.contrib.messages import constants as message_constants
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -78,19 +80,24 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": 'blog_db',
-        'USER': 'root',
-        'PASSWORD': 'Mirabel945',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-        'OPTIONS':  {
-            'autocommit':True,
-        }
-    }
-}
+    'default':dj_database_url.config
+    (default = 'postgresql://blog_db_6bto_user:JVKDVOFBZzHPEfy2COHg4vUn47JbqsAr@dpg-cv4pmbnnoe9s73ceo9eg-a.oregon-postgres.render.com/blog_db_6bto')}
+
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": 'blog_db',
+#         'USER': 'root',
+#         'PASSWORD': 'Mirabel945',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306',
+#         'OPTIONS':  {
+#             'autocommit':True,
+#         }
+#     }
+# }
 
 
 # Password validation
@@ -130,9 +137,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+# ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = 'media/'
