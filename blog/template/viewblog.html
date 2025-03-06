@@ -1,0 +1,115 @@
+{% extends "common.html" %}
+{% load static %}
+
+{% block main_content %}
+
+<div class="container">
+    <div class="row">
+        <!-- Left Column - Image Display -->
+        <div class="col-md-6 mt-2">
+            {% if blog.image %}
+                <img src="{{ blog.image.url }}" alt="{{ blog.blog_title }}" class="img-fluid" style="width: 70%; height: 50%;">
+            {% else %}
+                <img src="path/to/default/image.jpg" alt="{{ blog.blog_title }}" class="img-fluid">
+            {% endif %}
+        </div>
+
+        <!-- Right Column - Blog Details -->
+        <div class="col-md-6 mt-2">
+            <h3>{{ blog.blog_title }}</h3>
+            <p><strong>Content:</strong> {{ blog.content }}</p>
+            <p><strong>Ingredients:</strong> {{ blog.ingredient }}</p>
+            <p><strong>Category:</strong> {{ blog.category }}</p>
+            <p><strong>Description:</strong> {{ blog.description }}</p>
+
+            <!-- Edit and Delete Buttons (visible to authenticated staff only) -->
+            {% if user.is_authenticated and user.is_staff %}
+                <!-- Button trigger modal for edit -->
+            <button class="btn btn-primary mb-5"  data-bs-toggle="modal" data-bs-target="#staticBackdrop_edit">Edit</button>
+
+            <!-- Button trigger modal for delete -->
+            <a class="btn btn-danger mb-5" data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Delete</a>
+        
+
+        <!-- Modal -->
+            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Delete {{ blog.blog_title }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Do you want to delete this blog?
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <a class="btn btn-primary" href="{% url 'delete-blog' blog.id %}">Yes</a>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+                <!--Edit Modal -->
+            <div class="modal fade" id="staticBackdrop_edit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit {{ blog.blog_title }}</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <form 
+                                action="{% url 'edit-blog' blog.id %}"  
+                                class="container border border-primary col-md-6 p-3 my-3 rounded"
+                                method="post"
+                                enctype="multipart/form-data"  
+                            >
+                                {% csrf_token %}
+
+                                <h3 class="text-center">Edit Blog</h3>
+                                
+                                <!-- Blog Title -->
+                                <input type="text" placeholder="Blog Title" class="form-control mb-2" name="blog_title" value="{{ blog.blog_title }}">
+
+                                <!-- Image (if applicable) -->
+                                <label for="" class="mb-2 ps-2">Upload Image</label>
+                                <input type="file" class="form-control mb-2" name="image">
+
+                                <!-- Content -->
+                                <textarea placeholder="Blog Content" class="form-control mb-2" name="content">{{ blog.content }}</textarea>
+
+                                <!-- Category -->
+                                <input type="text" placeholder="Category" class="form-control mb-2" name="category" value="{{ blog.category }}">
+
+                                <!-- Ingredient -->
+                                <input type="text" placeholder="Ingredient" class="form-control mb-2" name="ingredient" value="{{ blog.ingredient }}">
+
+                                <!-- Description -->
+                                <input type="text" placeholder="Description" class="form-control mb-2" name="description" value="{{ blog.description }}">
+
+                                <!-- Submit Button -->
+                                <button class="btn btn-primary w-100 mb-2" type="submit">Update Blog</button>
+                        </form>
+
+                    </div>
+                    {% comment %} <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <a class="btn btn-primary" href="{% url 'delete-blog' blog.id%}">Yes</a>
+                    {% comment %} </div> {% endcomment %} 
+                    
+                </div>
+                </div>
+            </div>
+           {% endif %} 
+        </div>
+    </div>
+</div>
+
+
+
+  
+  
+{% endblock main_content %}

@@ -1,0 +1,60 @@
+{% extends "common.html" %}
+{% load static %}
+{% block main_content %}
+
+<!-- viewAllBlogs.html -->
+<div class="container">
+    <h1 class="text-center h3">All Blogs</h1>
+    <p class="text-center"><a href="{% url 'add-blog' %}">Add blog here</a></p>
+    <hr>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Image</th>
+                <th scope="col">Title</th>
+                <th scope="col">Content</th>
+                <th scope="col">ingredient</th>
+                <th scope="col">description</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for blog in all_blog %}
+                <tr>
+                    <th scope="row">{{ blog.id }}</th>
+                    {% if blog.image %}
+                        <td><img src="{{ blog.image.url }}" alt="{{ blog.blog_title }}" height="40"></td>
+                    {% else %}
+                        <td><img src="{% static 'default-image.png' %}" alt="No image" height="40"></td>
+                    {% endif %}
+                    <td>
+                        <a href="{% url 'view-blog' blog.id %}" class="text-black">{{ blog.blog_title }}</a>
+                    </td>
+                    <td>{{ blog.content|truncatewords:10 }}</td>
+                    <td>{{ blog.ingredient|truncatewords:5 }}</td>
+                    <td>{{ blog.description|truncatewords:5 }}</td>
+                    <td>
+                        {% if blog.approved %}
+                            <a href="{% url 'approve-reject-blog' blog.id 'reject' %}" class="btn btn-sm
+                            btn-danger"> Reject </a>
+                        {% else %}
+                            <a href="{% url 'approve-reject-blog' blog.id 'approve' %}" class="btn btn-sm
+                            btn-success"> approve </a>
+                        {% endif %}
+                        </td>   
+                    </tr>
+ 
+                    </td>   
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No blogs available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock main_content %}
