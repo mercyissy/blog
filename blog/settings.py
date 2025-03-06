@@ -82,8 +82,8 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 
 
 DATABASES = {
-    'default':dj_database_url.config
-    (default = 'postgresql://blog_db_6bto_user:JVKDVOFBZzHPEfy2COHg4vUn47JbqsAr@dpg-cv4pmbnnoe9s73ceo9eg-a.oregon-postgres.render.com/blog_db_6bto')}
+    'default':dj_database_url.config(default = 'postgresql://blog_db_6bto_user:JVKDVOFBZzHPEfy2COHg4vUn47JbqsAr@dpg-cv4pmbnnoe9s73ceo9eg-a.oregon-postgres.render.com/blog_db_6bto')
+    }
 
 # DATABASES = {
 #     "default": {
